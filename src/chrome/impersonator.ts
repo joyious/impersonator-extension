@@ -123,7 +123,7 @@ class ImpersonatorProvider extends EventEmitter {
         return throwUnsupported("personal_sign not supported");
       }
       case "eth_sendTransaction": {
-        break;
+        return await this.provider.send(method, params ? params : []);
       }
       // unchanged from Eip1193Bridge
       case "eth_gasPrice": {
