@@ -1,3 +1,5 @@
+# Download the release and unpack, go to the browser extension manager and choose "Load unpacked" to select the package
+
 # Impersonator Extension
 
 <i><b>Log-in as ANY address on ALL dapps.</b></i><br />
