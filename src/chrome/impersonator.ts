@@ -38,10 +38,21 @@ class ImpersonatorProvider extends EventEmitter {
   };
 
   request(request: { method: string; params?: Array<any> }): Promise<any> {
+    // console.log("request", request.method, request.params);
     return this.send(request.method, request.params || []);
   }
 
-  async send(method: string, params?: Array<any>): Promise<any> {
+  async send(
+    method: string | { method: string; params?: unknown[] | object },
+    params?: Array<any>
+  ): Promise<any> {
+    // console.log("send", method, params);
+
+    if (typeof method !== "string") {
+      params = (method as any).params;
+      method = method.method;
+    }
+
     const throwUnsupported = (message: string): never => {
       return logger.throwError(message, Logger.errors.UNSUPPORTED_OPERATION, {
         method: method,
@@ -128,7 +139,7 @@ class ImpersonatorProvider extends EventEmitter {
       // unchanged from Eip1193Bridge
       case "eth_gasPrice": {
         const result = await this.provider.getGasPrice();
-        return result.toHexString();
+        return hexValue(result.toHexString());
       }
       case "eth_blockNumber": {
         return await this.provider.getBlockNumber();
